@@ -5,7 +5,7 @@ namespace Wordle
 {
 	public interface IWordleBot
 	{
-        public List<GuessResult> Guesses { get; set; }
+        public List<GuessResult> Guesses { get; set; } 
 
         public string GenerateGuess();
 

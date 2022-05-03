@@ -11,29 +11,30 @@ namespace Wordle
 
             //Console.WriteLine(guessResult);
 
-            string filePath = Directory.GetCurrentDirectory() + "/data/english_words_full.txt";
-
-            Console.WriteLine(filePath);
+            //string filePath = "../../../data/english_words_full.txt";
 
             int totalGuesses = 0;
 
-            var secretWords = new string[] { "crane", "trash" };
+            var secretWords = new string[] { "crane", "trash", "about" };
 
             foreach (var secretWord in secretWords ) {
                 var bot = new HumanBot();
 
+                Console.WriteLine("New Game!");
                 var game = new WordleGame(secretWord);
 
                 int guesses = game.Play(bot);
                 Console.WriteLine("Gameover.");
                 Console.WriteLine($"Num Guesses: {guesses}");
+                Console.WriteLine();
 
                 totalGuesses += guesses;
 
             }
             double averageGuesses = (double)totalGuesses / secretWords.Length;
-            Console.WriteLine($"Average Guesses: {averageGuesses}");
             Console.WriteLine();
+            Console.WriteLine($"Average Guesses: {averageGuesses}");
+            
         }
     }
 }

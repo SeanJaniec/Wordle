@@ -25,13 +25,15 @@ namespace Wordle
                 var game = new WordleGame(secretWord);
 
                 int guesses = game.Play(bot);
-                Console.WriteLine("Game over. guesses=" + guesses);
+                Console.WriteLine("Gameover.");
+                Console.WriteLine($"Num Guesses: {guesses}");
 
                 totalGuesses += guesses;
 
             }
-
-
+            double averageGuesses = (double)totalGuesses / secretWords.Length;
+            Console.WriteLine($"Average Guesses: {averageGuesses}");
+            Console.WriteLine();
         }
     }
 }

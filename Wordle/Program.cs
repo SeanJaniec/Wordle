@@ -6,15 +6,19 @@ namespace Wordle
     {
         static void Main(string[] args)
         {
-            var guessResult = new GuessResult("arise");
+            //var guessResult = new GuessResult("arise");
 
-            Console.WriteLine(guessResult);
+            //Console.WriteLine(guessResult);
 
-            //var bot = new BrycesSweetBot();
+            var bot = new SuperDopeBot();
 
-            //var game = new WordleGame("saber");
+            var game = new WordleGame("beans");
+            
+            int guesses = game.Play(bot);
 
-            //int guesses = game.Play(bot);
+            Console.WriteLine(guesses);
+
+
         }
     }
 }

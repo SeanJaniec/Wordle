@@ -4,7 +4,7 @@ namespace Wordle
 	public class WordleGame
 	{
         public string SecretWord { get; set; }
-        public int MaxGuesses { get; set; }
+		public int MaxGuesses { get; set; } = 10000;
 
 		public WordleGame(string secretWord = "arise")
 		{
@@ -35,7 +35,33 @@ namespace Wordle
 		// TODO
 		public GuessResult CheckGuess( string guess )
         {
-			return new GuessResult(guess);
+			GuessResult guessResult = new GuessResult(guess);
+
+			// string[] secretLetters = (string)SecretWord.Split('');
+
+			foreach (LetterGuess letter in guessResult.Guess)
+            {
+				int index = 0;
+
+				if (guessResult.Guess[index].Equals(SecretWord[index]))
+                {
+					letter.LetterResult = LetterResult.Correct;
+                }
+				else if (SecretWord.Contains(guessResult.Guess[index].Letter))
+                {
+					letter.LetterResult = LetterResult.Misplaced;
+
+				}
+                else
+                {
+					letter.LetterResult = LetterResult.Incorrect;
+
+				}
+			}
+
+        
+
+            return guessResult;
         }
 
 		private bool IsCorrect(GuessResult guessResult)

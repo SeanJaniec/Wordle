@@ -15,6 +15,7 @@ namespace Wordle
 			foreach(var letter in guess)
             {
 				Guess.Add(new LetterGuess(letter));
+
             }
 		}
 

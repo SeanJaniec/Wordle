@@ -12,14 +12,18 @@ namespace Wordle
 
             var bot = new SuperDopeBot();
 
-            var game = new WordleGame("could");
-            
+            var game = new WordleGame("ghoul");
+
+
+
             int guesses = game.Play(bot);
 
             Console.WriteLine(guesses);
 
+            //Console.WriteLine(game.CheckGuess("askew"));
+
 
         }
     }
-}
+}   
 

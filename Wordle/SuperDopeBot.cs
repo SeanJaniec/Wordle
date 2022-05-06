@@ -9,21 +9,19 @@ namespace Wordle
         public List<GuessResult> Guesses { get; set; } = new List<GuessResult>();
 
         private List<string> guesses = new List<string>();
-        public string GenerateGuess()
-        {
-            string guess = "";
 
+        private List<string> fiveLetterWords = new List<string>();
+
+        public SuperDopeBot()
+        {
             string filePathPrimary = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_10k_mit.txt";
 
             string[] Primary = File.ReadAllLines(filePathPrimary);
 
 
-            //string filePath = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_full.txt";
+            string filePath = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_full.txt";
 
-            //string[] lines = File.ReadAllLines(filePath);
-
-            List<string> fiveLetterWords = new List<string>();
-
+            string[] lines = File.ReadAllLines(filePath);
 
             foreach (var line in Primary)
             {
@@ -34,13 +32,23 @@ namespace Wordle
             }
 
 
-            //foreach (var line in lines)
-            //{
-            //    if (line.Length == 5 && !fiveLetterWords.Contains(line))
-            //    {
-            //        fiveLetterWords.Add(line);
-            //    }
-            //}
+            foreach (var line in lines)
+            {
+                if (line.Length == 5 && !fiveLetterWords.Contains(line))
+                {
+                    fiveLetterWords.Add(line);
+                }
+            }
+        }
+        public string GenerateGuess()
+        {
+            string guess = "";
+
+  
+
+
+
+    
 
 
 
@@ -105,20 +113,20 @@ namespace Wordle
                 guess = "brick";
                 return guess;
             }
-            else if (Guesses.Count == 1 && correctletters.Count != 5)
+            else if (Guesses.Count == 1 && correctletters.Count < 5)
             {
 
                 guess = "glent";
                 return guess;
 
             }
-            else if (Guesses.Count == 2 && correctletters.Count != 5)
+            else if (Guesses.Count == 2 && correctletters.Count < 5)
             {
                 guess = "waqfs";
                 return guess;
 
             }
-            else if (Guesses.Count == 3 && correctletters.Count != 5)
+            else if (Guesses.Count == 3 && correctletters.Count < 5)
             {
                 guess = "vozhd";
                 return guess;
@@ -142,7 +150,7 @@ namespace Wordle
 
                     for (int i = 0; i < word.Length; i++)
                     {
-                        if (word.Contains(correctletters[i]))
+                        if (correctletters.Contains(word[i]))
                         {
                             numOfMatching++;
                         }
@@ -154,7 +162,7 @@ namespace Wordle
                         fiveLetterWords2.Add(word);
                     }
 
-                    numOfMatching = 0;
+                    
                 }
 
              
@@ -169,13 +177,13 @@ namespace Wordle
                 }
 
 
+
             }
 
+            guess = guesses[0];
+            guesses.RemoveAt(0);
+            
 
-
-
-            guess = guesses.First();
-            guesses.Remove(guesses.First());
 
 
 

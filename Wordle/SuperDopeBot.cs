@@ -11,24 +11,21 @@ namespace Wordle
 
         public string GenerateGuess()
         {
-
             string guess = "";
 
-            List<char> correctLetters = new List<char>();
-            List<char> misplacedLetters = new List<char>();
-            List<char> incorrectLetters = new List<char>();
+            string filePathPrimary = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_10k_mit.txt";
+
+            string[] Primary = File.ReadAllLines(filePathPrimary);
 
 
-
-
-
-            string filePath = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_10k_mit.txt";
+            string filePath = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_full.txt";
 
             string[] lines = File.ReadAllLines(filePath);
 
             List<string> fiveLetterWords = new List<string>();
 
-            foreach (var line in lines)
+
+            foreach (var line in Primary)
             {
                 if (line.Length == 5)
                 {
@@ -37,208 +34,369 @@ namespace Wordle
             }
 
 
-
-            foreach (GuessResult guessResult in Guesses)
+            foreach (var line in lines)
             {
-                foreach (LetterGuess letterGuess in guessResult.Guess)
+                if (line.Length == 5 && !fiveLetterWords.Contains(line))
                 {
-                    if (letterGuess.LetterResult == LetterResult.Correct)
-                    {
-                        correctLetters.Add(letterGuess.Letter);
-                    }
-                    else if (letterGuess.LetterResult == LetterResult.Misplaced)
-                    {
-                        misplacedLetters.Add(letterGuess.Letter);
-                    }
-                    else
-                    {
-                        incorrectLetters.Add(letterGuess.Letter);
-                    }
-
+                    fiveLetterWords.Add(line);
                 }
             }
+
+
+
+
+            // int index = 0;
+
+            List<char> correctletters = new List<char>();
+
+
+            foreach (GuessResult guessresult in Guesses)
+            {
+                foreach(LetterGuess letterGuess in guessresult.Guess)
+                {
+                    
+                    if(letterGuess.LetterResult == LetterResult.Correct || letterGuess.LetterResult == LetterResult.Misplaced && !correctletters.Contains(letterGuess.Letter))
+                    {
+
+                        correctletters.Add(letterGuess.Letter);
+
+                        //if(index % 5 == 0)
+                        //{
+                        //    char one = letterGuess.Letter;
+                        //}
+                        //if (index % 5 == 1)
+                        //{
+                        //    char two = letterGuess.Letter;
+                        //}
+                        //if (index % 5 == 2)
+                        //{
+                        //    char three = letterGuess.Letter;
+                        //}
+                        //if (index % 5 == 3)
+                        //{
+                        //    char four = letterGuess.Letter;
+                        //}
+                        //if (index % 5 == 4)
+                        //{
+                        //    char five = letterGuess.Letter;
+                        //}
+                    } 
+                }
+            }
+
+            foreach(char letter in correctletters)
+            {
+                System.Console.WriteLine(letter);
+            }
+
+ 
+
 
             if (Guesses.Count == 0)
             {
-                guess = "their";
-
-
-
+                guess = "brick";
+                return guess;
             }
-
-            else if ((correctLetters.Count + misplacedLetters.Count) < 3)
+            else if (Guesses.Count == 1 && correctletters.Count != 5)
             {
 
+                guess = "glent";
+                return guess;
 
-                foreach (char incorrectLetter in incorrectLetters)
-                {
-                    foreach (string word in fiveLetterWords.ToList())
-                    {
-                        if (word.Contains(incorrectLetter))
-                        {
-                            fiveLetterWords.Remove(word);
-                        }
-                    }
-                }
+            }
+            else if (Guesses.Count == 2 && correctletters.Count != 5)
+            {
+                guess = "jumpy";
+                return guess;
 
+            }
+            else if (Guesses.Count == 3 && correctletters.Count != 5)
+            {
+                guess = "vozhd";
+                return guess;
 
-
-
-                //foreach (string word in fiveLetterWords)
-                //{
-                //    if (word.Contains(misplacedLetters[4]) && word.Contains(misplacedLetters[3]) && word.Contains(misplacedLetters[2]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[3]) && word.Contains(misplacedLetters[2]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-
-                //    }
-                //    else if (word.Contains(misplacedLetters[2]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-
-                //    }
-                //    else if (word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-
-                //    }
-                //    else
-                //    {
-                //        guess = "clamp";
-                //    }
-
-
-
-                //}
-                guess = fiveLetterWords[0];
+            }
+            else if (Guesses.Count == 4 && correctletters.Count != 5)
+            {
+                guess = "waqfs";
+                return guess;
 
             }
             else
             {
-                //foreach (string word in fiveLetterWords)
-                //{
-                //    foreach (char incorrectLetter in incorrectLetters)
-                //    {
-                //        if (word.Contains(incorrectLetter))
-                //        {
-                //            fiveLetterWords.Remove(word);
-                //        }
-                //    }
-                //}
-                int guessNum = 0;
-                foreach(GuessResult guessResult in Guesses)
+                int numOfMatching = 0;
+
+
+                foreach (string word in fiveLetterWords)
                 {
-                    guessNum++;
+                    //int index = 0;
+
+                    for (int i = 0; i < word.Length; i++)
+                    {
+                        if (word[i] == correctletters[i])
+                        {
+                            numOfMatching++;
+                        }
+
+                    }
+
+                    if (numOfMatching == 5)
+                    {
+                        return word;
+                    }
                 }
-                guess = fiveLetterWords[guessNum];
-
-                //foreach (string word in fiveLetterWords)
-                //{
-                //    //five kinda right
-                //    if (word.Contains(correctLetters[4]) && word.Contains(correctLetters[3]) && word.Contains(correctLetters[2]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]) && word.Contains(correctLetters[3]) && word.Contains(correctLetters[2]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[0]) && word.Contains(correctLetters[2]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-
-                //    else if (word.Contains(misplacedLetters[2]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[0]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[3]) && word.Contains(misplacedLetters[2]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[0]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[4]) && word.Contains(misplacedLetters[3]) && word.Contains(misplacedLetters[2]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-
-                //    //four kinda right
-                //    else if (word.Contains(correctLetters[3]) && word.Contains(correctLetters[2]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]) && word.Contains(correctLetters[2]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]) && word.Contains(misplacedLetters[1]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[2]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[2]) && word.Contains(misplacedLetters[3]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    // three kinda right
-                //    else if (word.Contains(correctLetters[2]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]) && word.Contains(correctLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]) && word.Contains(misplacedLetters[1]) && word.Contains(correctLetters[0]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-                //    else if (word.Contains(misplacedLetters[0]) && word.Contains(misplacedLetters[1]) && word.Contains(misplacedLetters[2]))
-                //    {
-                //        guess = word;
-                //        return guess;
-                //    }
-
-
-
-
-                //}
             }
+
+            foreach(char letter in correctletters.ToList())
+            {
+                System.Console.WriteLine(letter);
+            }
+
+
+            
+            
+           
+
+            
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
             return guess;
+
+
+
+
+            // string guess = "";
+
+
+
+            // List<char> correctLetters = new List<char>();
+            // List<char> misplacedLetters = new List<char>();
+            // List<char> incorrectLetters = new List<char>();
+
+
+            // string filePathPrimary = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_10k_mit.txt";
+
+            // string[] Primary = File.ReadAllLines(filePathPrimary);
+
+
+            // string filePath = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_full.txt";
+
+            // string[] lines = File.ReadAllLines(filePath);
+
+            // List<string> fiveLetterWords = new List<string>();
+
+            //// string[] fiveLetterWords = new string[] { };
+
+            // //for (int i = fiveLetterWords.Count-1; i >= 0; i--)
+            // //{
+            // //    fiveLetterWords.RemoveAt(i);
+            // //}
+
+            //     ////create fiveletterword list
+
+            //     foreach (var line in Primary)
+            //     {
+            //         if (line.Length == 5)
+            //         {
+            //             fiveLetterWords.Add(line);
+            //         }
+            //     }
+
+
+            // foreach (var line in lines)
+            // {
+            //     if (line.Length == 5 && !fiveLetterWords.Contains(line))
+            //     {
+            //         fiveLetterWords.Add(line);
+            //     }
+            // }
+
+
+
+
+
+            // //add letterresults to respective lists
+
+            // foreach (GuessResult guessResult in Guesses)
+            // {
+            //     foreach (LetterGuess letterGuess in guessResult.Guess)
+            //     {
+            //         if (letterGuess.LetterResult == LetterResult.Correct && !correctLetters.Contains(letterGuess.Letter))
+            //         {
+            //             correctLetters.Add(letterGuess.Letter);
+            //         }
+            //         else if (letterGuess.LetterResult == LetterResult.Misplaced && !misplacedLetters.Contains(letterGuess.Letter))
+            //         {
+            //             misplacedLetters.Add(letterGuess.Letter);
+            //         }
+            //         else if (letterGuess.LetterResult == LetterResult.Incorrect)
+            //         {
+            //             foreach(string word in fiveLetterWords.ToArray())
+            //             {
+            //                 if (word.Contains(letterGuess.Letter))
+            //                 {
+            //                     fiveLetterWords.Remove(word);
+            //                 }
+
+            //             }
+            //             //incorrectLetters.Add(letterGuess.Letter);
+            //         }
+
+            //     }
+            // }
+
+            // // if has an incorrect letter, remove
+
+
+            // //foreach (string word in fiveLetterWords.ToList())
+            // //{
+            // //    foreach (char incorrectLetter in incorrectLetters)
+            // //    {
+            // //        if (word.Contains(incorrectLetter))
+            // //        {
+            // //            fiveLetterWords.Remove(word);
+            // //        }
+            // //    }
+            // //}
+
+            // //changing misplaced to correct
+
+            // //foreach (char misplacedLetter in misplacedLetters.ToArray())
+            // //{
+            // //    if (correctLetters.Contains(misplacedLetter))
+            // //    {
+            // //        misplacedLetters.Remove(misplacedLetter);
+            // //    }
+            // //}
+
+            // //
+
+            // //foreach (string word in fiveLetterWords.ToArray())
+            // //{
+            // //    for (int i = 0; i < word.Length - 1; i++)
+            // //    {
+            // //        if (word[i] == word[i + 1])
+            // //        {
+            // //            fiveLetterWords.Remove(word);
+            // //        }
+            // //    }
+            // //}
+
+
+            // System.Console.WriteLine(correctLetters.Count);
+            // System.Console.WriteLine(incorrectLetters.Count);
+            // System.Console.WriteLine(misplacedLetters.Count);
+
+
+
+            // System.Console.WriteLine(fiveLetterWords.Count);
+
+            // //if doesnt contain correct letter, remove
+
+            // foreach (string word in fiveLetterWords.ToList())
+            // {
+            //     foreach (char correctLetter in correctLetters)
+            //     {
+            //         if (!word.Contains(correctLetter))
+            //         {
+            //             fiveLetterWords.Remove(word);
+            //         }
+            //     }
+            // }
+
+            // System.Console.WriteLine(fiveLetterWords.Count);
+
+
+
+
+
+
+            // if (Guesses.Count == 0)
+            // {
+            //     guess = "their";
+
+            //     return guess;
+
+
+
+            // }
+
+
+
+
+
+
+            // else
+            // {
+
+
+
+            //     foreach (string word in fiveLetterWords)
+            //     {
+            //         foreach (GuessResult guessResult in Guesses)
+            //         {
+            //             foreach (LetterGuess letterGuess in guessResult.Guess)
+            //             {
+            //                 for (int i = 0; i < 5; i++)
+            //                 {
+            //                     //if letter in each word equals the corresponding letter in each guess and correctletters doesnt already contain it
+            //                     if (word[i] == letterGuess.Letter && !correctLetters.Contains(word[i]))
+            //                     {
+            //                         correctLetters.Add(letterGuess.Letter);
+            //                     }
+            //                 }
+            //             }
+
+            //         }
+            //     }
+
+
+
+            //     if (fiveLetterWords.Count != 0)
+            //     {
+            //         guess = fiveLetterWords[0];
+
+            //     }
+
+
+            //     //    guess = fiveLetterWords[0];
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //     //}
+
+
+
+
+
+
+            // }
+
+            // return guess;
 
         }
     }

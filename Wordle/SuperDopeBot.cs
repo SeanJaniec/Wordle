@@ -89,7 +89,15 @@ namespace Wordle
                 System.Console.WriteLine(letter);
             }
 
- 
+            List<string> fiveLetterWords2 = new List<string>();
+
+            List<int> guessnums = new List<int>();
+
+            int index = 0;
+
+         
+
+
 
 
             if (Guesses.Count == 0)
@@ -106,7 +114,7 @@ namespace Wordle
             }
             else if (Guesses.Count == 2 && correctletters.Count != 5)
             {
-                guess = "jumpy";
+                guess = "waqfs";
                 return guess;
 
             }
@@ -118,22 +126,23 @@ namespace Wordle
             }
             else if (Guesses.Count == 4 && correctletters.Count != 5)
             {
-                guess = "waqfs";
+                guess = "jumpy";
                 return guess;
 
             }
             else
             {
-                int numOfMatching = 0;
+                
 
 
                 foreach (string word in fiveLetterWords)
                 {
-                    //int index = 0;
+                    int numOfMatching = 0;
+
 
                     for (int i = 0; i < word.Length; i++)
                     {
-                        if (word[i] == correctletters[i])
+                        if (word.Contains(correctletters[i]))
                         {
                             numOfMatching++;
                         }
@@ -142,14 +151,38 @@ namespace Wordle
 
                     if (numOfMatching == 5)
                     {
-                        return word;
+                        fiveLetterWords2.Add(word);
                     }
+
+                    numOfMatching = 0;
                 }
+
+             
+                
             }
 
-            foreach(char letter in correctletters.ToList())
+            if(guessnums.Count == 0)
+            {
+                foreach (string word in fiveLetterWords2)
+                {
+                    guessnums.Add(index);
+                    index++;
+                }
+            }
+           
+
+
+            guess = fiveLetterWords2[guessnums.First()];
+            guessnums.RemoveAt(0);
+
+            foreach (char letter in correctletters.ToList())
             {
                 System.Console.WriteLine(letter);
+            }
+
+            foreach(string word in fiveLetterWords2)
+            {
+                System.Console.WriteLine(word);
             }
 
 

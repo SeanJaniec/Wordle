@@ -18,9 +18,9 @@ namespace Wordle
             string[] Primary = File.ReadAllLines(filePathPrimary);
 
 
-            string filePath = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_full.txt";
+            //string filePath = @"C:\Users\seanj\OneDrive\Documents\GitHub\Wordle\Wordle\data\english_words_full.txt";
 
-            string[] lines = File.ReadAllLines(filePath);
+            //string[] lines = File.ReadAllLines(filePath);
 
             List<string> fiveLetterWords = new List<string>();
 
@@ -34,13 +34,13 @@ namespace Wordle
             }
 
 
-            foreach (var line in lines)
-            {
-                if (line.Length == 5 && !fiveLetterWords.Contains(line))
-                {
-                    fiveLetterWords.Add(line);
-                }
-            }
+            //foreach (var line in lines)
+            //{
+            //    if (line.Length == 5 && !fiveLetterWords.Contains(line))
+            //    {
+            //        fiveLetterWords.Add(line);
+            //    }
+            //}
 
 
 
@@ -55,7 +55,7 @@ namespace Wordle
                 foreach(LetterGuess letterGuess in guessresult.Guess)
                 {
                     
-                    if(letterGuess.LetterResult == LetterResult.Correct || letterGuess.LetterResult == LetterResult.Misplaced && !correctletters.Contains(letterGuess.Letter))
+                    if(letterGuess.LetterResult == LetterResult.Correct || letterGuess.LetterResult == LetterResult.Misplaced)
                     {
 
                         correctletters.Add(letterGuess.Letter);
@@ -91,9 +91,9 @@ namespace Wordle
 
             List<string> fiveLetterWords2 = new List<string>();
 
-            List<int> guessnums = new List<int>();
+            List<string> guesses = new List<string>();
 
-            int index = 0;
+            
 
          
 
@@ -124,7 +124,7 @@ namespace Wordle
                 return guess;
 
             }
-            else if (Guesses.Count == 4 && correctletters.Count != 5)
+            else if (Guesses.Count == 4 && correctletters.Count < 5)
             {
                 guess = "jumpy";
                 return guess;
@@ -161,19 +161,39 @@ namespace Wordle
                 
             }
 
-            if(guessnums.Count == 0)
+            if(guesses.Count == 0)
             {
                 foreach (string word in fiveLetterWords2)
                 {
-                    guessnums.Add(index);
-                    index++;
+                    guesses.Add(word);
                 }
+
+                
             }
-           
+
+            guess = guesses.First();
+            guesses.Remove(guesses.First());
 
 
-            guess = fiveLetterWords2[guessnums.First()];
-            guessnums.RemoveAt(0);
+
+            //if(guessnums.Count == 0)
+            //{
+            //    int index = 0;
+
+            //    foreach (string word in fiveLetterWords2)
+            //    {
+            //        guessnums.Add(index);
+            //        index++;
+            //    }
+            //}
+
+
+            //if(guessnums.Count != 0)
+            //{
+            //    guess = fiveLetterWords2[guessnums.First()];
+            //    guessnums.RemoveAt(0);
+            //}
+
 
             foreach (char letter in correctletters.ToList())
             {

@@ -8,7 +8,7 @@ namespace Wordle
     {
         public List<GuessResult> Guesses { get; set; } = new List<GuessResult>();
 
-
+        private List<string> guesses = new List<string>();
         public string GenerateGuess()
         {
             string guess = "";
@@ -91,7 +91,7 @@ namespace Wordle
 
             List<string> fiveLetterWords2 = new List<string>();
 
-            List<string> guesses = new List<string>();
+            
 
             
 
@@ -161,15 +161,18 @@ namespace Wordle
                 
             }
 
-            if(guesses.Count == 0)
+            if (guesses.Count == 0)
             {
                 foreach (string word in fiveLetterWords2)
                 {
                     guesses.Add(word);
                 }
 
-                
+
             }
+
+
+
 
             guess = guesses.First();
             guesses.Remove(guesses.First());
@@ -210,19 +213,7 @@ namespace Wordle
             
            
 
-            
-
-
-
-
-
-
-
-
-
-
-
-
+         
 
 
 

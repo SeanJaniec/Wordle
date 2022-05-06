@@ -12,7 +12,7 @@ namespace Wordle
 
             var bot = new SuperDopeBot();
 
-            var game = new WordleGame("pants");
+            var game = new WordleGame("could");
             
             int guesses = game.Play(bot);
 
